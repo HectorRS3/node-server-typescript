@@ -10,7 +10,7 @@ export class UserController {
     host: "localhost",
     port: 3306,
     username: "root",
-    password: "",
+    password: "pass1234",
     database: "typeorm",
     entities: [
       "src/Entity/**/*.ts"
