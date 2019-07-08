@@ -10,8 +10,8 @@ export class UserController {
     host: "localhost",
     port: 3306,
     username: "root",
-    password: "pass1234",
-    database: "user",
+    password: "",
+    database: "typeorm",
     entities: [
       "src/Entity/**/*.ts"
     ],
@@ -25,6 +25,17 @@ export class UserController {
       let userRepository = connection.getRepository(User)
       let users = await userRepository.find()
       return users
+    })
+    .catch(error => console.error(error))
+  }
+
+  @Get('/user/:id')
+  @OnUndefined(404)
+  getUserAction(@Param('id') id: number) {
+    createConnection(this.conn).then(async (connection: Connection) => {
+      let userRepository = connection.getRepository(User)
+      let user  = await userRepository.findOne(id)
+      return user
     })
     .catch(error => console.error(error))
   }
