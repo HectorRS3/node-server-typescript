@@ -5,23 +5,10 @@ import { JsonController, OnUndefined, Param, Body, Get, Post, Put, Delete } from
 @JsonController()
 export class UserController {
 
-  conn: any = {
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "pass1234",
-    database: "typeorm",
-    entities: [
-      "src/Entity/**/*.ts"
-    ],
-    autoSchemaSync: true
-  }
-
   @Get('/users')
   @OnUndefined(404)
   getAllUsers() {
-    createConnection(this.conn).then(async (connection: Connection) => {
+    createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let users = await userRepository.find()
       return users
@@ -32,7 +19,7 @@ export class UserController {
   @Get('/user/:id')
   @OnUndefined(404)
   getUserAction(@Param('id') id: number) {
-    createConnection(this.conn).then(async (connection: Connection) => {
+    createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let user  = await userRepository.findOne(id)
       return user
@@ -42,7 +29,7 @@ export class UserController {
 
   @Post('/create/user')
   createUserAction(@Body() firstName: string, lastName: string, age: number) {
-    createConnection(this.conn).then(async (connection: Connection) => {
+    createConnection().then(async (connection: Connection) => {
       let user: any = new User()
       user.firstName = firstName
       user.lastName = lastName
@@ -59,7 +46,7 @@ export class UserController {
   @Put('/user/:id')
   @OnUndefined(404)
   updateUserAction(@Param('id') id: number, @Body() firstName: string, lastName: string, age: number) {
-    createConnection(this.conn).then(async (connection: Connection) => {
+    createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let currentUser = await userRepository.findOne(id)
       if(currentUser) {
@@ -79,7 +66,7 @@ export class UserController {
   @Delete('/user/:id')
   @OnUndefined(404)
   deleteUserAction(@Param('id') id: number) {
-    createConnection(this.conn).then(async (connection: Connection) => {
+    createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let userToRemove = await userRepository.findOne(id)
       if(userToRemove) {
