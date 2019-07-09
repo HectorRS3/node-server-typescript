@@ -1,13 +1,13 @@
 import { createConnection, Connection } from "typeorm"
 import { User } from "../Entity/User";
-import { JsonController, OnUndefined, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
+import { JsonController, OnUndefined, Param, Body, Get, Post, Put, Delete, Req, Res } from "routing-controllers";
 
 @JsonController()
 export class UserController {
 
-  @Get('/users')
+  @Get("/users")
   @OnUndefined(404)
-  getAllUsers() {
+  public getAllUsers(@Req() req: any, @Res() res: any) {
     createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let users = await userRepository.find()
@@ -16,9 +16,9 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
-  @Get('/user/:id')
+  @Get("/user/:id")
   @OnUndefined(404)
-  getUserAction(@Param('id') id: number) {
+  public getUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
     createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let user  = await userRepository.findOne(id)
@@ -27,8 +27,8 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
-  @Post('/create/user')
-  createUserAction(@Body() firstName: string, lastName: string, age: number) {
+  @Post("/user/create")
+  public createUserAction(@Req() req: any, @Res() res: any, @Body() firstName: string, lastName: string, age: number) {
     createConnection().then(async (connection: Connection) => {
       let user: any = new User()
       user.firstName = firstName
@@ -43,9 +43,9 @@ export class UserController {
       .catch(error => console.error(error))
   }
 
-  @Put('/user/:id')
+  @Put("/user/:id")
   @OnUndefined(404)
-  updateUserAction(@Param('id') id: number, @Body() firstName: string, lastName: string, age: number) {
+  public updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() firstName: string, lastName: string, age: number) {
     createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let currentUser = await userRepository.findOne(id)
@@ -63,9 +63,9 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
-  @Delete('/user/:id')
+  @Delete("/user/:id")
   @OnUndefined(404)
-  deleteUserAction(@Param('id') id: number) {
+  public deleteUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
     createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let userToRemove = await userRepository.findOne(id)
