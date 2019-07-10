@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "tsc": "tsc",
-    "prod": "npm run tsc && node ./build/server.js",
+    "prod": "ts-node server.ts",
     "dev": "ts-node server.ts"
   },
   "author": "Juan G. De Jesus",
