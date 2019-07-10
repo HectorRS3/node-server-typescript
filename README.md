@@ -23,11 +23,11 @@ You will need to create an ormconfig.json that goes this way:
 ```json
 {
     "type": "mysql",
-    "host": "localhost",
+    "host": <your-host>,
     "port": 3306,
-    "username": "root",
-    "password": "",
-    "database": "typeorm",
+    "username": <your-db-username>,
+    "password": <your-db-password>,
+    "database": <your-db-name>,
     "entities": [
       "src/Entity/**/*.ts"
     ],
