@@ -12,13 +12,12 @@ export class UserController {
    */
   @Get("/users")
   @OnUndefined(404)
-  public getAllUsers(@Req() req: any, @Res() res: any) {
-    createConnection().then(async (connection: Connection) => {
-      let userRepository = connection.getRepository(User)
-      let users = await userRepository.find()
-      return users
-    })
-    .catch(error => console.error(error))
+  public async getAllUsers(@Req() req: any, @Res() res: any) {
+    let connection = await createConnection()
+    let userRepository = await connection.getRepository(User)
+    let users = await userRepository.find()
+    res.send(users)
+    connection.close()
   }
 
   /**
@@ -29,13 +28,12 @@ export class UserController {
    */
   @Get("/user/:id")
   @OnUndefined(404)
-  public getUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
-    createConnection().then(async (connection: Connection) => {
-      let userRepository = connection.getRepository(User)
-      let user  = await userRepository.findOne(id)
-      return user
-    })
-    .catch(error => console.error(error))
+  public async getUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
+    let connection = await createConnection()
+    let userRepository = await connection.getRepository(User)
+    let user = await userRepository.findOne(id)
+    res.send(user)
+    connection.close()
   }
 
   /**
@@ -45,19 +43,16 @@ export class UserController {
    * @param body 
    */
   @Post("/user/create")
-  public createUserAction(@Req() req: any, @Res() res: any, @Body() body: User) {
-    createConnection().then(async (connection: Connection) => {
-      let user: any = new User()
-      user.firstName = body.firstName
-      user.lastName = body.lastName
-      user.age = body.age
-
-      let userRepository = connection.getRepository(User)
-
-      await userRepository.save(user)
-      return {message: "User created Successfully!", user: user}
-    })
-      .catch(error => console.error(error))
+  public async createUserAction(@Req() req: any, @Res() res: any, @Body() body: User) {
+    let connection  = await createConnection()
+    let user: User  = new User()
+    user.firstName = body.firstName
+    user.lastName = body.lastName
+    user.age  = body.age
+    let userRepository = await connection.getRepository(User)
+    await userRepository.save(user)
+    res.send({message: "User created Successfully!", user: user})
+    connection.close()
   }
 
   /**
@@ -69,22 +64,20 @@ export class UserController {
    */
   @Put("/user/:id")
   @OnUndefined(404)
-  public updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() body: User) {
-    createConnection().then(async (connection: Connection) => {
-      let userRepository = connection.getRepository(User)
-      let currentUser = await userRepository.findOne(id)
-      if(currentUser) {
-        currentUser.firstName = body.firstName
-        currentUser.lastName = body.lastName
-        currentUser.age = body.age
-        await userRepository.save(currentUser)
-        
-        return { message: "User updated successfully!", user: currentUser}
-      } else {
-        return {message: "User not found."}
-      }
-    })
-    .catch(error => console.error(error))
+  public async updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() body: User) {
+    let connection = await createConnection()
+    let userRepository = await connection.getRepository(User)
+    let currentUser = await userRepository.findOne(id)
+    if(currentUser) {
+      currentUser.firstName = body.firstName
+      currentUser.lastName = body.lastName
+      currentUser.age = body.age
+      await userRepository.save(currentUser)
+      res.send({ message: "User updated successfully!", user: currentUser})
+    } else {
+      res.send({message: "User not found."})
+    }
+    connection.close()
   }
 
   /**
@@ -95,17 +88,16 @@ export class UserController {
    */
   @Delete("/user/:id")
   @OnUndefined(404)
-  public deleteUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
-    createConnection().then(async (connection: Connection) => {
-      let userRepository = connection.getRepository(User)
-      let userToRemove = await userRepository.findOne(id)
-      if(userToRemove) {
-        await userRepository.remove(userToRemove)
-        return { message: "User removed successfully!", user: userToRemove }
-      } else {
-        return { message: "User not found"}
-      }
-    })
-    .catch(error => console.error(error))
+  public async deleteUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
+    let connection = await createConnection()
+    let userRepository = await connection.getRepository(User)
+    let user = await userRepository.findOne(id)
+    if(user) {
+      await userRepository.remove(user)
+      res.send({ message: "User removed successfully!", user: user })
+    } else {
+      res.send({ message: "User not found" })
+    }
+    connection.close()
   }
 }
