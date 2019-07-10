@@ -42,9 +42,7 @@ export class UserController {
    * Create user action method.
    * @param req 
    * @param res 
-   * @param firstName 
-   * @param lastName 
-   * @param age 
+   * @param body 
    */
   @Post("/user/create")
   public createUserAction(@Req() req: any, @Res() res: any, @Body() body: User) {
@@ -67,9 +65,7 @@ export class UserController {
    * @param req 
    * @param res 
    * @param id 
-   * @param firstName 
-   * @param lastName 
-   * @param age 
+   * @param body 
    */
   @Put("/user/:id")
   @OnUndefined(404)
