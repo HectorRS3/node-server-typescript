@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "tsc": "tsc",
-    "prod": "npm run tsc && node ./build/server.js"
+    "prod": "npm run tsc && node ./build/server.js",
+    "dev": "ts-node server.ts"
   },
   "author": "Juan G. De Jesus",
   "license": "MIT",
@@ -22,6 +23,7 @@
     "mysql2": "^1.6.5",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.7.7",
+    "ts-node": "^8.3.0",
     "typeorm": "^0.2.18",
     "typescript": "^3.5.2"
   }
