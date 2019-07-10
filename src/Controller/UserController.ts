@@ -5,6 +5,11 @@ import { JsonController, OnUndefined, Param, Body, Get, Post, Put, Delete, Req, 
 @JsonController()
 export class UserController {
 
+  /**
+   * Get an array of all users action method.
+   * @param req 
+   * @param res 
+   */
   @Get("/users")
   @OnUndefined(404)
   public getAllUsers(@Req() req: any, @Res() res: any) {
@@ -16,6 +21,12 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
+  /**
+   * Get selected user action method.
+   * @param req 
+   * @param res 
+   * @param id 
+   */
   @Get("/user/:id")
   @OnUndefined(404)
   public getUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
@@ -27,6 +38,14 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
+  /**
+   * Create user action method.
+   * @param req 
+   * @param res 
+   * @param firstName 
+   * @param lastName 
+   * @param age 
+   */
   @Post("/user/create")
   public createUserAction(@Req() req: any, @Res() res: any, @Body() firstName: string, lastName: string, age: number) {
     createConnection().then(async (connection: Connection) => {
@@ -43,6 +62,15 @@ export class UserController {
       .catch(error => console.error(error))
   }
 
+  /**
+   * Update user action method.
+   * @param req 
+   * @param res 
+   * @param id 
+   * @param firstName 
+   * @param lastName 
+   * @param age 
+   */
   @Put("/user/:id")
   @OnUndefined(404)
   public updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() firstName: string, lastName: string, age: number) {
@@ -63,6 +91,12 @@ export class UserController {
     .catch(error => console.error(error))
   }
 
+  /**
+   * Delete user action method.
+   * @param req 
+   * @param res 
+   * @param id 
+   */
   @Delete("/user/:id")
   @OnUndefined(404)
   public deleteUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number) {
