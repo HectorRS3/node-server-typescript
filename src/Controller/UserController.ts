@@ -47,12 +47,12 @@ export class UserController {
    * @param age 
    */
   @Post("/user/create")
-  public createUserAction(@Req() req: any, @Res() res: any, @Body() firstName: string, lastName: string, age: number) {
+  public createUserAction(@Req() req: any, @Res() res: any, @Body() body: User) {
     createConnection().then(async (connection: Connection) => {
       let user: any = new User()
-      user.firstName = firstName
-      user.lastName = lastName
-      user.age = age
+      user.firstName = body.firstName
+      user.lastName = body.lastName
+      user.age = body.age
 
       let userRepository = connection.getRepository(User)
 
@@ -73,14 +73,14 @@ export class UserController {
    */
   @Put("/user/:id")
   @OnUndefined(404)
-  public updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() firstName: string, lastName: string, age: number) {
+  public updateUserAction(@Req() req: any, @Res() res: any, @Param('id') id: number, @Body() body: User) {
     createConnection().then(async (connection: Connection) => {
       let userRepository = connection.getRepository(User)
       let currentUser = await userRepository.findOne(id)
       if(currentUser) {
-        currentUser.firstName = firstName
-        currentUser.lastName = lastName
-        currentUser.age = age
+        currentUser.firstName = body.firstName
+        currentUser.lastName = body.lastName
+        currentUser.age = body.age
         await userRepository.save(currentUser)
         
         return { message: "User updated successfully!", user: currentUser}
